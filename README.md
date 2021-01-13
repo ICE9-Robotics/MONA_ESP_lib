@@ -20,5 +20,13 @@ To install the MONA-ESP library into the Arduono IDE follow the next steps:
 - Scroll up in this webpage, click the green button on the top right of the page with the text *Clone or Download*. Choose Download as Zip. 
 - From the Arduino IDE, go to Sketch > Include Library > Add .ZIP Library . Browse and find the downloaded Zip file, select and install.
 
+### Installing External Libraries
+The MONA-ESP code depend on external libraries to control some of the peripherals of the board. To compile and use the MONA-ESP libraries it is necessary to install some dependencies. For that, within the Arduino IDE go to Tools > Manage Libraries
+Search for and install the following libraries:
+- Adafruit LSM9DS1
+- Adafruit MCP23008
+- Adafruit Neopixel
+- Adafruit Unified Sensor
+
 ### Testing the Library
-Once the library is installed, from the Arduino IDE select File > Examples > MONA-ESP Robot Library and select one of the examples. Ensure that the board *ESP32 Wrover Module* has been selected. Connect the MONA-ESP robot to the compter through the USB cable and click Upload. 
+Once the libraries have been installed, from the Arduino IDE select File > Examples > MONA-ESP Robot Library and select one of the examples. Ensure that the board *ESP32 Wrover Module* has been selected (From Tools > Board). Connect the MONA-ESP robot to the compter through the USB cable and click Upload. 
