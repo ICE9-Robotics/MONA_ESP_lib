@@ -40,10 +40,10 @@
 //To move a motor the selected direction has to be set HIGH and the
 //contrary direction low. Example: For right motor forward set:
 // Mot_right_forward=HIGH and Mot_right_backward=LOW
-#define Mot_right_forward         21
-#define Mot_right_backward        19
-#define Mot_left_forward          18
-#define Mot_left_backward         4
+#define Mot_right_forward         19
+#define Mot_right_backward        21
+#define Mot_left_forward          4
+#define Mot_left_backward         18
 
 //Motor Feedback
 #define Mot_right_feedback	      39 //Pulses read from right motor encoder
@@ -122,45 +122,5 @@ int Batt_Vol(void);
 void Set_LED(int Led_number, int Red, int Green, int Blue);
 //IMU reading
 void IMU_read_sensors(sensors_event_t *a, sensors_event_t *m, sensors_event_t *g, sensors_event_t *temp);
-//void IMU_read_sensors();
-
-/* ----Library interface definition for Mona_ESP in Arduino Library style----*/
-class Mona_ESP
-{
-  // user-accessible  interface
-  public:
-  //Mona constructor function - setup pinModes
-  	Mona_ESP(void);
-  //Right Motor
-    void Right_mot_forward(int speed);
-    void Right_mot_backward(int speed);
-    void Right_mot_stop(void);
-  //Left Motor
-    void Left_mot_forward(int speed);
-    void Left_mot_backward(int speed);
-    void Left_mot_stop(void);
-  //Both motors
-    void Motors_forward(int speed);
-    void Motors_backward(int speed);
-    void Motors_spin_left(int speed);
-    void Motors_spin_right(int speed);
-    void Motors_stop(void);
-  //IR sensors
-  	// void Enable_IR(void);
-  	// void Disable_IR(void);
-  	// int Read_IR(int IR_number);
-  //Battery Voltage
-  	int Batt_Vol(void);
-  // //LEDS control
-  // 	void LED2_ON(void);
-  // 	void LED2_OFF(void);
-  // 	void LED3_ON(void);
-  // 	void LED3_OFF(void);
-
-  // library-accessible  interface
-  private:
-    int value;
-};
-
 
 #endif

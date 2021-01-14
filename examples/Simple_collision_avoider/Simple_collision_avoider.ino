@@ -12,7 +12,10 @@
 
 //Variables
 bool IR_values[5] = {false, false, false, false, false};
-int threshold = 50;
+//Threshold value used to determine a detection on the IR sensors.
+//Reduce the value for a earlier detection, increase it if there
+//false detections.
+int threshold = 35;
 //State Machine Variable
 // 0 -move forward , 1 - forward obstacle , 2 - right proximity , 3 - left proximity
 int state, old_state;
@@ -72,5 +75,5 @@ void loop(){
 		state=0;
 	}
 
-	delay(50);
+	delay(5);
 }
