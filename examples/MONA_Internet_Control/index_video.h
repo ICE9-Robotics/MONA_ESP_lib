@@ -39,7 +39,7 @@ document.addEventListener('keydown', function(e) {
     </head>
     <body>
         <h2>MONA Remote Control</h2>
-         <iframe src="http://81.159.198.46:8023/html/min.php" width="550" height="380" autoplay> Sorry your browser does not support embedding videos. </iframe> <!-- Link to camera stream. Take care of port forwarding and where the html is accessed from -->
+         <iframe src="***********" width="550" height="380" autoplay> Sorry your browser does not support embedding videos. </iframe> <!-- Link to camera stream. Take care of port forwarding and where the html is accessed from -->
          <br/>
         <ul> 
             <li>Press an arrow key to start moving in that direction.</li>
