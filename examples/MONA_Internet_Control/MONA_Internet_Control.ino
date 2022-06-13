@@ -27,10 +27,10 @@
 #include <SPI.h>
 #include "index_video.h"  //change this to represent the required html code inside the relevant .h file
 
-const char* ssid = "BT-RKAT7K"; //ssid for your router
-const char* password = "pRN7K4YapY4anc"; //password for your router
+const char* ssid = "*******"; //ssid for your router
+const char* password = "********"; //password for your router
 
-ESP32WebServer server(81);  //Choose required port number
+ESP32WebServer server(80);  //Choose required port number
 bool IR_values[5] = {false, false, false, false, false};
 int threshold = 35;
 
