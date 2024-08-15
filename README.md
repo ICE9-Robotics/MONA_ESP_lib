@@ -6,7 +6,7 @@ Library to use the MONA-ESP robot with the Arduino IDE
 ### Arduino IDE
 Install the current upstream Arduino IDE at the 1.8 level or later. The current version is at the [Arduino website](http://www.arduino.cc/en/main/software).
 
-### ESP32 compatibility with the Arduino IDE
+### ESP32 compatibility with the Arduino IDE - for Espressif ESP32 3.x.x onwards
 To install the Arduino core for ESP32, the suggested method is using the Boards Manager From the Arduino IDE. More information can be found at the [ESP32 Arduino core Github page](https://github.com/espressif/arduino-esp32).
 To install the ESP32 core with the Boards Manager follow the instructions:
 - Start Arduino IDE and open File > Preferences window.
