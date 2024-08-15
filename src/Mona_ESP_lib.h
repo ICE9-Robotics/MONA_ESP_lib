@@ -5,6 +5,8 @@
   Released into the public domain.
 */
 
+//#define ESP_VERSION               3 // int 3.x.x, note legacy monas use 2.x.x
+
 #ifndef Mona_ESP_lib_h
 #define Mona_ESP_lib_h
 #include "Arduino.h"
@@ -40,10 +42,10 @@
 //To move a motor the selected direction has to be set HIGH and the
 //contrary direction low. Example: For right motor forward set:
 // Mot_right_forward=HIGH and Mot_right_backward=LOW
-#define Mot_right_forward         19
-#define Mot_right_backward        21
-#define Mot_left_forward          4
-#define Mot_left_backward         18
+#define Mot_right_forward         21 //19
+#define Mot_right_backward        19 //21
+#define Mot_left_forward          18  //4
+#define Mot_left_backward         4 // 18
 
 //Motor Feedback
 #define Mot_right_feedback	      39 //Pulses read from right motor encoder

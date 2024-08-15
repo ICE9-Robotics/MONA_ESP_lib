@@ -34,22 +34,21 @@ void Mona_ESP_init(void){
 	pinMode(LED_RGB2, OUTPUT);						//WS2812b led pin
 
 	//Setup PWM channels for motors
-	ledcSetup(Mot_rig_for_pwm,Mot_freq,Mot_res);
-	ledcAttachPin(Mot_right_forward, Mot_rig_for_pwm);//PWM settings MRF
+	analogWriteResolution(Mot_right_forward, Mot_res);
+	analogWriteFrequency(Mot_right_forward, Mot_freq);
+	analogWriteResolution(Mot_right_backward, Mot_res);
+	analogWriteFrequency(Mot_right_backward, Mot_freq);
+	analogWriteResolution(Mot_left_forward, Mot_res);
+	analogWriteFrequency(Mot_left_forward, Mot_freq);
+	analogWriteResolution(Mot_left_backward, Mot_res);
+	analogWriteFrequency(Mot_left_backward, Mot_freq);	
 
-	ledcSetup(Mot_rig_bac_pwm,Mot_freq,Mot_res);
-	ledcAttachPin(Mot_right_backward, Mot_rig_bac_pwm);//PWM settings MRB
 
-	ledcSetup(Mot_lef_for_pwm,Mot_freq,Mot_res);
-	ledcAttachPin(Mot_left_forward, Mot_lef_for_pwm);//PWM settings MLF
-
-	ledcSetup(Mot_lef_bac_pwm,Mot_freq,Mot_res);
-	ledcAttachPin(Mot_left_backward, Mot_lef_bac_pwm);//PWM settings MLB
 	//Turn off the Motor
-	ledcWrite(Mot_rig_for_pwm, 0);
-	ledcWrite(Mot_rig_bac_pwm, 0);
-	ledcWrite(Mot_lef_for_pwm, 0);
-	ledcWrite(Mot_lef_bac_pwm, 0);
+	analogWrite(Mot_right_forward, 0);
+	analogWrite(Mot_right_backward, 0);
+	analogWrite(Mot_left_forward, 0);
+	analogWrite(Mot_left_backward, 0);
 
 	//Initialize I2C pins
 	Wire.begin(SDA,SCL);  // I2C pins in the board
@@ -104,41 +103,41 @@ void Right_mot_forward(int speed){
 	if(speed>255){
 		speed = 255; //Limit max speed to the 8 bit resolution
 	}
-	ledcWrite(Mot_rig_for_pwm, speed);
-	ledcWrite(Mot_rig_bac_pwm, 0);
+	analogWrite(Mot_right_forward, speed);
+	analogWrite(Mot_right_backward, 0);
 }
 
 void Right_mot_backward(int speed){
 	if(speed>255){
 		speed = 255; //Limit max speed to the 8 bit resolution
 	}
-	ledcWrite(Mot_rig_for_pwm, 0);
-	ledcWrite(Mot_rig_bac_pwm, speed);
+	analogWrite(Mot_right_forward, 0);
+	analogWrite(Mot_right_backward, speed);
 }
 
 void Right_mot_stop(void){
-	ledcWrite(Mot_rig_for_pwm, 0);
-	ledcWrite(Mot_rig_bac_pwm, 0);
+	analogWrite(Mot_right_forward, 0);
+	analogWrite(Mot_right_backward, 0);
 }
 //Left Motor
 void Left_mot_forward(int speed){
 	if(speed>255){
 		speed = 255; //Limit max speed to the 8 bit resolution
 	}
-	ledcWrite(Mot_lef_for_pwm, speed);
-	ledcWrite(Mot_lef_bac_pwm, 0);
+	analogWrite(Mot_left_forward, speed);
+	analogWrite(Mot_left_backward, 0);
 }
 
 void Left_mot_backward(int speed){
 	if(speed>255){
 		speed = 255; //Limit max speed to the 8 bit resolution
 	}
-	ledcWrite(Mot_lef_for_pwm, 0);
-	ledcWrite(Mot_lef_bac_pwm, speed);
+	analogWrite(Mot_left_forward, 0);
+	analogWrite(Mot_left_backward, speed);
 }
 void Left_mot_stop(void){
-	ledcWrite(Mot_lef_for_pwm, 0);
-	ledcWrite(Mot_lef_bac_pwm, 0);
+	analogWrite(Mot_left_forward, 0);
+	analogWrite(Mot_left_backward, 0);
 }
 
 //Both motors
