@@ -1,4 +1,4 @@
-# Arduino Libary for MONA-ESP Robot
+# Legacy Arduino Libary for MONA-ESP Robot for the Espressif ESP32 version 2.x.x
 
 ## Description
 Library to use the MONA-ESP robot with the Arduino IDE
