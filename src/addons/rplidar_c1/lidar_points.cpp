@@ -2,6 +2,7 @@
 
 #include <math.h>
 
+const uint8_t LidarRawCapsuleStream::FRAME_MAGIC[2] = {'L', 'R'};
 const uint8_t LidarBinaryStream::FRAME_MAGIC[2] = {'L', 'D'};
 const uint8_t LidarBinaryStream::FRAME_END[2] = {'E', 'E'};
 
@@ -16,6 +17,15 @@ void polarToXYmm(const LidarPoint& point, int16_t& x_mm, int16_t& y_mm) {
 }
 
 }  // namespace
+
+LidarRawCapsuleStream::LidarRawCapsuleStream(Stream& out) : _out(out) {}
+
+void LidarRawCapsuleStream::onCapsule(const uint8_t* data, size_t len) {
+  _out.write(FRAME_MAGIC, sizeof(FRAME_MAGIC));
+  const uint16_t capsule_len = static_cast<uint16_t>(len);
+  _out.write(reinterpret_cast<const uint8_t*>(&capsule_len), sizeof(capsule_len));
+  _out.write(data, len);
+}
 
 LidarBinaryStream::LidarBinaryStream(Stream& out, LidarPointFormat format)
     : _out(out), _format(format) {}

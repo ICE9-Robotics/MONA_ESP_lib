@@ -34,6 +34,7 @@ class RPLidarC1 {
   bool startScan();
   bool readPoint(LidarPoint& point, uint32_t timeout_ms = 1000);
   LidarScan& getPoints(uint32_t point_timeout_ms = 2000, LidarPointStream* stream = nullptr);
+  void setRawCapsuleStream(LidarRawCapsuleStream* stream) { _raw_stream = stream; }
   void pumpScan();
   bool resyncScanStream();
   uint8_t scanAnswerType() const { return _scan_type; }
@@ -118,6 +119,7 @@ class RPLidarC1 {
   size_t _queue_tail = 0;
 
   LidarScan _scan;
+  LidarRawCapsuleStream* _raw_stream = nullptr;
 
   void flushInput();
   bool reopen(uint32_t baud);

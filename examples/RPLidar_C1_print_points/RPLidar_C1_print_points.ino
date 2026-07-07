@@ -82,6 +82,7 @@ void printScan(const LidarScan& scan, Stream& out = Serial,
   for (size_t i = 0; i < scan.count(); ++i) {
     printPoint(out, scan[i], format);
   }
+  out.println();
 
   if (include_summary) {
     out.println("---");

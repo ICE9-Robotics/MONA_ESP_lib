@@ -37,6 +37,19 @@ class LidarPointStream {
   virtual void endRotation(size_t count) {}
 };
 
+// 'LR' + u16 size + raw capsule bytes from the lidar UART stream.
+class LidarRawCapsuleStream {
+ public:
+  static const uint8_t FRAME_MAGIC[2];
+
+  explicit LidarRawCapsuleStream(Stream& out);
+
+  void onCapsule(const uint8_t* data, size_t len);
+
+ private:
+  Stream& _out;
+};
+
 // 'LD' + int16 pairs per point + 'EE' + u16 count.
 class LidarBinaryStream : public LidarPointStream {
  public:
