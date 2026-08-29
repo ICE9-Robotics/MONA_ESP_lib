@@ -11,7 +11,9 @@ To install the Arduino core for ESP32, the suggested method is using the Boards 
 To install the ESP32 core with the Boards Manager follow the instructions:
 - Start Arduino IDE and open File > Preferences window.
 - Into the  *Additional Board Manager URLs* field, enter the following release link. You can add multiple URLs, separating them with commas. 
-  + `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json`
+```
+https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+```
 - Click 'Ok' to close the Board Preferences Window. Open Boards Manager from Tools > Board > Board Manager. Search for *esp32*, select the option from  Espressif Systems and install it. 
 - After the instalation has finished, go to Tools > Board and select *ESP32 Wrover Module*
 
