@@ -26,10 +26,8 @@ void Mona_ESP_init(void){
 	pinMode(Mot_right_backward, OUTPUT);	//Motor control outputs
 	pinMode(Mot_left_forward, OUTPUT);		//Motor control outputs
 	pinMode(Mot_left_backward, OUTPUT);		//Motor control outputs
-	pinMode(Mot_right_feedback, INPUT);		//Motor feedback inputs
-	pinMode(Mot_right_feedback_2, INPUT);	//Motor feedback inputs
-	pinMode(Mot_left_feedback, INPUT);		//Motor feedback inputs
-	pinMode(Mot_left_feedback_2, INPUT);	//Motor feedback inputs
+	encoder_init(Mot_right_feedback_2, Mot_right_feedback,
+	             Mot_left_feedback, Mot_left_feedback_2);
 	pinMode(LED_RGB1, OUTPUT);						//WS2812b led pin
 	pinMode(LED_RGB2, OUTPUT);						//WS2812b led pin
 

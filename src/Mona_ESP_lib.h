@@ -16,6 +16,7 @@
 #include <Wire.h>
 #include <Adafruit_LSM9DS1.h>
 #include <Adafruit_Sensor.h>  // not used but needed by LSM9DS1 lib
+#include "encoder.h"
 
 /* ----Pin Definitions for Mona ESP----*/
 //Define IO Expander pins
@@ -47,11 +48,11 @@
 #define Mot_left_forward          4  //4
 #define Mot_left_backward         18 // 18
 
-//Motor Feedback
-#define Mot_right_feedback	      39 //Pulses read from right motor encoder
-#define Mot_right_feedback_2	    23 //Pulses read from right motor encoder
-#define Mot_left_feedback	        35 //Pulses read from left motor encoder
-#define Mot_left_feedback_2	      34  //Pulses read from left motor encoder
+//Motor Feedback — N20 hall quadrature (A/B per wheel). Counted in hardware by PCNT.
+#define Mot_right_feedback	      39 //Right encoder A
+#define Mot_right_feedback_2	    23 //Right encoder B
+#define Mot_left_feedback	        35 //Left encoder A
+#define Mot_left_feedback_2	      34 //Left encoder B
 
 //IR Sensors
 #define IR_enable_1			          exp_4	//Enable the IR in sensor 1 by setting to HIGH through IO Expander
