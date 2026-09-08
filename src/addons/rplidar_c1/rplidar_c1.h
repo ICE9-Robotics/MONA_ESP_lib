@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <HardwareSerial.h>
 
-#include "lidar_points.h"
+#include "addons/lidar_common/lidar_points.h"
 
 /** Default UART baud rate for the RPLIDAR C1. */
 static const uint32_t RPLIDAR_C1_BAUD = 460800;

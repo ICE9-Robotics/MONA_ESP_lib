@@ -1,11 +1,11 @@
-#include "RPLidar_C1.h"
+#include "Coin_D6.h"
 #include <WiFi.h>
 
 // Wiring (cross TX/RX):
-//   LIDAR TX (yellow) -> ESP32 GPIO26 (RX)
-//   LIDAR RX (green)  -> ESP32 GPIO27 (TX)
-//   LIDAR GND (black) -> ESP32 GND
-//   LIDAR VCC (red)   -> 5V (needs ~250mA; aim for 5.0V, not 4.7V)
+//   LIDAR TX -> ESP32 GPIO26 (RX)
+//   LIDAR RX -> ESP32 GPIO27 (TX)
+//   LIDAR GND -> ESP32 GND
+//   LIDAR VCC -> 5V (typical 240 mA, peak ~800 mA)
 static const int LIDAR_RX_PIN = 26;
 static const int LIDAR_TX_PIN = 27;
 
@@ -16,16 +16,14 @@ static const char* WIFI_SSID = "NetworkForMonaESP";
 static const char* WIFI_PASSWORD = "WeLoveMONA123";
 static const uint16_t LIDAR_TCP_PORT = 8888;
 
-static const LidarPointFormat POINT_OUTPUT = LidarPointFormat::Cartesian;
-
-RPLidarC1 lidar(LIDAR_SERIAL);
+CoinD6 lidar(LIDAR_SERIAL);
 WiFiServer lidarServer(LIDAR_TCP_PORT);
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
   Serial.println();
-  Serial.println("RPLIDAR C1 point stream over WiFi");
+  Serial.println("COIN-D6 raw packet stream over WiFi");
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
@@ -37,9 +35,9 @@ void setup() {
 
   Serial.print("Connected. IP address: ");
   Serial.println(WiFi.localIP());
-  Serial.print("Point stream TCP port: ");
+  Serial.print("Raw packet TCP port: ");
   Serial.println(LIDAR_TCP_PORT);
-  Serial.println("Frame format: 'LD' + int16 pairs + 'EE' + u16 count");
+  Serial.println("Frame format: 'LR' + u16 size + scan packet bytes");
 
   lidar.begin(LIDAR_RX_PIN, LIDAR_TX_PIN);
   delay(500);
@@ -60,7 +58,7 @@ void setup() {
 
   Serial.print("Scan stream type 0x");
   Serial.print(lidar.scanAnswerType(), HEX);
-  Serial.print(", capsule size ");
+  Serial.print(", packet size ");
   Serial.println(lidar.capsuleSize());
 
   lidarServer.begin();
@@ -77,12 +75,15 @@ void loop() {
   Serial.print("Client connected from ");
   Serial.println(client.remoteIP());
 
-  LidarBinaryStream pointStream(client, POINT_OUTPUT);
+  LidarRawCapsuleStream rawStream(client);
+  lidar.setRawCapsuleStream(&rawStream);
 
   while (client.connected()) {
-    lidar.getPoints(2000, &pointStream);
+    lidar.pumpScan();
+    delay(1);
   }
 
+  lidar.setRawCapsuleStream(nullptr);
   client.stop();
   Serial.println("Client disconnected");
   Serial.println("Waiting for TCP client...");
