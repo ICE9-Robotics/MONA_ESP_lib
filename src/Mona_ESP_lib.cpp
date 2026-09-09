@@ -7,6 +7,7 @@
 #include "Mona_ESP_lib.h"
 #include "Adafruit_MCP23008.h"
 #include <Adafruit_NeoPixel.h>
+#include "motor_sync.h"
 
 /* ----Library functions implementation for Mona ESP in C style----*/
 //Initialize global objects
@@ -47,6 +48,7 @@ void Mona_ESP_init(void){
 	analogWrite(Mot_right_backward, 0);
 	analogWrite(Mot_left_forward, 0);
 	analogWrite(Mot_left_backward, 0);
+	motor_sync_init();
 
 	//Initialize I2C pins
 	Wire.begin(SDA,SCL);  // I2C pins in the board
@@ -101,41 +103,35 @@ void Right_mot_forward(int speed){
 	if(speed>255){
 		speed = 255; //Limit max speed to the 8 bit resolution
 	}
-	analogWrite(Mot_right_forward, speed);
-	analogWrite(Mot_right_backward, 0);
+	motor_set_right(speed);
 }
 
 void Right_mot_backward(int speed){
 	if(speed>255){
 		speed = 255; //Limit max speed to the 8 bit resolution
 	}
-	analogWrite(Mot_right_forward, 0);
-	analogWrite(Mot_right_backward, speed);
+	motor_set_right(-speed);
 }
 
 void Right_mot_stop(void){
-	analogWrite(Mot_right_forward, 0);
-	analogWrite(Mot_right_backward, 0);
+	motor_set_right(0);
 }
 //Left Motor
 void Left_mot_forward(int speed){
 	if(speed>255){
 		speed = 255; //Limit max speed to the 8 bit resolution
 	}
-	analogWrite(Mot_left_forward, speed);
-	analogWrite(Mot_left_backward, 0);
+	motor_set_left(speed);
 }
 
 void Left_mot_backward(int speed){
 	if(speed>255){
 		speed = 255; //Limit max speed to the 8 bit resolution
 	}
-	analogWrite(Mot_left_forward, 0);
-	analogWrite(Mot_left_backward, speed);
+	motor_set_left(-speed);
 }
 void Left_mot_stop(void){
-	analogWrite(Mot_left_forward, 0);
-	analogWrite(Mot_left_backward, 0);
+	motor_set_left(0);
 }
 
 //Both motors
