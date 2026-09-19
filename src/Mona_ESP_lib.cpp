@@ -7,7 +7,7 @@
 #include "Mona_ESP_lib.h"
 #include "Adafruit_MCP23008.h"
 #include <Adafruit_NeoPixel.h>
-#include "motor_sync.h"
+#include "motor_speed.h"
 
 /* ----Library functions implementation for Mona ESP in C style----*/
 //Initialize global objects
@@ -48,7 +48,7 @@ void Mona_ESP_init(void){
 	analogWrite(Mot_right_backward, 0);
 	analogWrite(Mot_left_forward, 0);
 	analogWrite(Mot_left_backward, 0);
-	motor_sync_init();
+	motor_speed_init();
 
 	//Initialize I2C pins
 	Wire.begin(SDA,SCL);  // I2C pins in the board
@@ -98,19 +98,26 @@ void Mona_ESP_init(void){
 	RGB2.show();
 }
 
+/* Legacy 0..255 "PWM-ish" API → ticks/s (~3600 at full scale). */
+static const int kLegacyMaxTicksPerSec = 3600;
+
+static int legacy_speed_to_tps(int speed) {
+	if (speed > 255) {
+		speed = 255;
+	}
+	if (speed < 0) {
+		speed = 0;
+	}
+	return speed * kLegacyMaxTicksPerSec / 255;
+}
+
 //Right Motor
 void Right_mot_forward(int speed){
-	if(speed>255){
-		speed = 255; //Limit max speed to the 8 bit resolution
-	}
-	motor_set_right(speed);
+	motor_set_right(legacy_speed_to_tps(speed));
 }
 
 void Right_mot_backward(int speed){
-	if(speed>255){
-		speed = 255; //Limit max speed to the 8 bit resolution
-	}
-	motor_set_right(-speed);
+	motor_set_right(-legacy_speed_to_tps(speed));
 }
 
 void Right_mot_stop(void){
@@ -118,17 +125,11 @@ void Right_mot_stop(void){
 }
 //Left Motor
 void Left_mot_forward(int speed){
-	if(speed>255){
-		speed = 255; //Limit max speed to the 8 bit resolution
-	}
-	motor_set_left(speed);
+	motor_set_left(legacy_speed_to_tps(speed));
 }
 
 void Left_mot_backward(int speed){
-	if(speed>255){
-		speed = 255; //Limit max speed to the 8 bit resolution
-	}
-	motor_set_left(-speed);
+	motor_set_left(-legacy_speed_to_tps(speed));
 }
 void Left_mot_stop(void){
 	motor_set_left(0);
