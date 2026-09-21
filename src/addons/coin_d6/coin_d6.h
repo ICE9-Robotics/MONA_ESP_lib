@@ -114,7 +114,10 @@ class CoinD6 {
   LidarScan& getPoints(uint32_t point_timeout_ms = 2000, LidarPointStream* stream = nullptr);
 
   /**
-   * Register a callback for raw scan packets before point decoding.
+   * Register a callback for raw scan packets.
+   *
+   * Note: When a stream is set, packets are not decoded into the point queue.
+   * Pass nullptr to resume point decoding.
    *
    * @param stream Receives each complete AA 55 packet, or nullptr to disable.
    */

@@ -73,20 +73,22 @@ class LidarRawCapsuleStream {
    */
   explicit LidarRawCapsuleStream(Stream& out);
 
+  virtual ~LidarRawCapsuleStream() = default;
   /**
    * Emit one capsule frame.
    *
    * @param data Raw capsule bytes from the lidar UART stream.
    * @param len Number of bytes in @p data.
    */
-  void onCapsule(const uint8_t* data, size_t len);
+  virtual void onCapsule(const uint8_t* data, size_t len);
 
  private:
   Stream& _out;
 };
 
 /**
- * Write decoded points for one rotation as a binary frame.
+ * Write decoded poin protected:
+ rotation as a binary frame.
  *
  * Frame format: `'LD'` + int16 pairs per point + `'EE'` + u16 point count.
  * Each pair is either (x_mm, y_mm) or (angle_deg * 100, distance_mm),

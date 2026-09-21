@@ -144,7 +144,7 @@ class RPLidarC1 {
   LidarScan& getPoints(uint32_t point_timeout_ms = 2000, LidarPointStream* stream = nullptr);
 
   /**
-   * Register a callback for raw measurement capsules before point decoding.
+   * Register a callback for raw measurement capsules.
    *
    * @param stream Receives each complete capsule buffer, or nullptr to disable.
    */

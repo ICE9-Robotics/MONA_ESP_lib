@@ -523,6 +523,7 @@ bool RPLidarC1::dequeuePoint(LidarPoint& point) {
 void RPLidarC1::decodeCapsule() {
   if (_raw_stream) {
     _raw_stream->onCapsule(_capsule_buf, _capsule_size);
+    return;
   }
 
   if (_scan_format == ScanFormat::UltraDense) {

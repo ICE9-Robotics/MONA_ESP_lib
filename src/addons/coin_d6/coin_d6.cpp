@@ -109,12 +109,13 @@ bool CoinD6::startScan() {
   resetParser();
   _queue_head = 0;
   _queue_tail = 0;
+  _last_frame_len = 0;
   _scanning = true;
   sendCommand(kStartScan, sizeof(kStartScan));
   const uint32_t start = millis();
   while (millis() - start < 3000) {
     pumpScan();
-    if (_queue_head != _queue_tail) {
+    if (_last_frame_len != 0) {
       return true;
     }
     delay(0);
@@ -268,8 +269,9 @@ bool CoinD6::finishScanPacket() {
     _last_frame_len = _frame_len;
     if (_raw_stream) {
       _raw_stream->onCapsule(_buf, _frame_len);
+    } else {
+      decodePacket(_buf, lsn);
     }
-    decodePacket(_buf, lsn);
   }
   resetParser();
   return ok;
