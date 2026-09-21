@@ -9,6 +9,7 @@ static const int LIDAR_TX_PIN = 27;
 
 static const char* WIFI_SSID = "NetworkForMonaESP";
 static const char* WIFI_PASSWORD = "WeLoveMONA123";
+static const bool WIFI_HOTSPOT_MODE = true;
 static const uint16_t LIDAR_TCP_PORT = 8888;
 static const uint16_t CONTROL_TCP_PORT = 8889;
 static const uint32_t ODOM_PERIOD_MS = 20;

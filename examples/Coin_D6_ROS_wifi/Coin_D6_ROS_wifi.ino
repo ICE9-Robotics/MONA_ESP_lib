@@ -4,27 +4,19 @@
   Stream COIN-D6 raw scan packets to a ROS 2 PC and accept wheel speed
   commands (ticks/s) while publishing encoder ticks.
 
-  PC launch (ROS 2 Jazzy):
-    ros2 launch mona_bringup mona.launch.py
-
-  Serial via micro-USB: USB Serial 115200.
-    Commands:
-     - "help" to print commands
-     - "s <left> <right>" to set motor speeds
-     - "stop" to stop motors
-     - "stat" to print status
-     - "log 0|1" to enable/disable logging
+  Serial via micro-USB: 
+    USB Serial for debugging and testing. 
+    Baud rate 115200. 
+    Type "help" for commands.
 
   TCP ports:
-    8888  lidar  'LR' + u16 size + scan packet bytes
-    8889  control  PC->ESP 'MW' + i16 left ticks/s + i16 right ticks/s
-                   ESP->PC 'OD' + u32 millis + i32 left ticks + i32 right ticks
-
-  Wiring (cross TX/RX):
-    LIDAR TX -> ESP32 GPIO26 (RX)
-    LIDAR RX -> ESP32 GPIO27 (TX)
-    LIDAR GND -> ESP32 GND
-    LIDAR VCC -> 5V (typical 240 mA, peak ~800 mA)
+    8888: lidar
+          packet format:
+          - Out: 'LR' + uint16 size + scan packet bytes
+    8889: control
+          packet format: 
+          - Out: 'OD' + uint32 millis + int32 left ticks + int32 right ticks
+          - In: 'MW' + int16 left ticks/s + int16 right ticks/s
 */
 #include "Mona_ESP_lib.h"
 #include "control_service.h"
@@ -36,13 +28,10 @@
 void setup() {
   Serial.begin(115200);
   delay(1000);
-  Serial.println();
-  printHelp();
-  Serial.println("PC: set host in yaml, then ros2 launch mona_bringup mona.launch.py");
 
   Mona_ESP_init();
   initMotors();
-  connectWifi();
+  wifiSetup();
 
   if (!startLidarScan()) {
     while (true) {
@@ -53,7 +42,8 @@ void setup() {
   lidarServer.begin();
   controlServer.begin();
   beginStatusLog();
-  Serial.println("Ready. Type help, or wait for ROS TCP clients.");
+  printInfo();
+  Serial.println("Ready. Type 'help' for commands, or wait for ROS TCP clients.");
 }
 
 void loop() {

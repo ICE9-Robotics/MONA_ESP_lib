@@ -21,3 +21,22 @@ void connectWifi() {
   Serial.print("Control TCP port: ");
   Serial.println(CONTROL_TCP_PORT);
 }
+
+void startHotspot() {
+  WiFi.softAP(WIFI_SSID, WIFI_PASSWORD);
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.print("Hotspot started. IP address: ");
+  Serial.println(myIP);
+  Serial.print("Lidar TCP port: ");
+  Serial.println(LIDAR_TCP_PORT);
+  Serial.print("Control TCP port: ");
+  Serial.println(CONTROL_TCP_PORT);
+}
+
+void wifiSetup() {
+  if (WIFI_HOTSPOT_MODE) {
+    startHotspot();
+  } else {
+    connectWifi();
+  }
+}

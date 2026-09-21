@@ -4,10 +4,12 @@
 #include "control_service.h"
 #include "lidar_service.h"
 #include "motor_speed.h"
+#include "ver.h"
+#include <WiFi.h>
 #include <stdio.h>
 #include <string.h>
 
-bool logging = true;
+bool logging = false;
 uint32_t loopGapMaxMs = 0;
 
 static char lineBuf[kLineMax];
@@ -47,9 +49,60 @@ static void resetPeriodCounters() {
 }
 
 void printHelp() {
-  Serial.println("# Coin_D6_ROS_wifi  USB serial test, ROS TCP optional");
-  Serial.println("# help | s left right | stop | stat | log 0|1");
-  Serial.println("# gap_max_ms on the 1 Hz line is the stall detector");
+  Serial.println("#################################");
+  Serial.println("# Commands:");
+  Serial.println("# help - print this help");
+  Serial.println("# s <left> <right> - set motor speeds");
+  Serial.println("# stop - stop motors");
+  Serial.println("# stat - print status");
+  Serial.println("# reset_stat - reset period counters");
+  Serial.println("# info - print info about the robot");
+  Serial.println("# log 0|1 - enable/disable screen logging");
+  Serial.println("#################################");
+}
+
+void printInfo() {
+  Serial.println("#################################");
+  Serial.println("# Info:");
+  Serial.print("# Firmware: ");
+  Serial.println(FIRMWARE_NAME);
+  Serial.print("# Version: ");
+  Serial.println(VERSION);
+  Serial.print("# Build date: ");
+  Serial.println(BUILD_DATE);
+  Serial.print("# Build time: ");
+  Serial.println(BUILD_TIME);
+  Serial.print("# IP address: ");
+  if (WIFI_HOTSPOT_MODE) {
+    Serial.println(WiFi.softAPIP());
+  } else {
+    Serial.println(WiFi.localIP());
+  }
+  Serial.print("# Lidar TCP port: ");
+  Serial.println(LIDAR_TCP_PORT);
+  Serial.print("# Control TCP port: ");
+  Serial.println(CONTROL_TCP_PORT);
+  Serial.print("# Hotspot mode: ");
+  Serial.println(WIFI_HOTSPOT_MODE ? "true" : "false");
+  Serial.print("# WiFi SSID: ");
+  Serial.println(WIFI_SSID);
+  Serial.print("# WiFi password: ");
+  Serial.println(WIFI_PASSWORD);
+  Serial.print("# WiFi stations: ");
+  Serial.println(WIFI_HOTSPOT_MODE ? WiFi.softAPgetStationNum() : 0);
+  Serial.print("# Lidar client: ");
+  if (lidarHasClient && lidarClient.connected()) {
+    Serial.println(lidarClient.remoteIP());
+  } else {
+    Serial.println("none");
+  }
+  Serial.print("# Control client: ");
+  if (controlHasClient && controlClient.connected()) {
+    Serial.println(controlClient.remoteIP());
+  } else {
+    Serial.println("none");
+  }
+  Serial.println("#################################");
 }
 
 void beginStatusLog() {
@@ -70,7 +123,14 @@ static void handleLine(char* line) {
     printStats();
     return;
   }
-
+  if (strcmp(line, "reset_stat") == 0) {
+    resetPeriodCounters();
+    return;
+  }
+  if (strcmp(line, "info") == 0) {
+    printInfo();
+    return;
+  }
   int a = 0;
   int b = 0;
   if (sscanf(line, "s %d %d", &a, &b) == 2) {
