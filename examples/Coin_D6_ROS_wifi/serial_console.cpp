@@ -80,6 +80,8 @@ void printInfo() {
   }
   Serial.print("# Lidar TCP port: ");
   Serial.println(LIDAR_TCP_PORT);
+  Serial.print("# Lidar scan: ");
+  Serial.println(lidarReady ? "up" : "waiting");
   Serial.print("# Control TCP port: ");
   Serial.println(CONTROL_TCP_PORT);
   Serial.print("# Hotspot mode: ");

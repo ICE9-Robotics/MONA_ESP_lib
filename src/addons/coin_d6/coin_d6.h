@@ -89,6 +89,15 @@ class CoinD6 {
   bool startScan();
 
   /**
+   * Ask the lidar to scan without waiting for a packet.
+   *
+   * The first call resets the parser and marks the driver scanning. Later
+   * calls only resend the start command, so a packet already in progress is
+   * left intact. Call @ref pumpScan() until @ref capsuleSize() is non-zero.
+   */
+  void requestScan();
+
+  /**
    * Read the next decoded scan point.
    *
    * Drains the UART, decodes packets as needed, and returns the oldest queued

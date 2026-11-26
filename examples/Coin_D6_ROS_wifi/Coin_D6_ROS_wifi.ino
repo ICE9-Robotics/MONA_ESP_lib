@@ -32,14 +32,8 @@ void setup() {
   Mona_ESP_init();
   initMotors();
   wifiSetup();
+  beginLidarUart();
 
-  if (!startLidarScan()) {
-    while (true) {
-      delay(1000);
-    }
-  }
-
-  lidarServer.begin();
   controlServer.begin();
   beginStatusLog();
   printInfo();
@@ -58,9 +52,10 @@ void loop() {
   lastLoopMs = now;
 
   serviceSerial();
-  serviceLidarClient();
   serviceControlClient();
   lidar.pumpScan();
+  pollLidar(now);
+  serviceLidarClient();
   lidarStream.flush();
   serviceStatusLog(now);
 

@@ -105,6 +105,17 @@ bool CoinD6::getDeviceInfo(CoinD6DeviceInfo& info, uint32_t timeout_ms) {
   return _info.valid;
 }
 
+void CoinD6::requestScan() {
+  if (!_scanning) {
+    resetParser();
+    _queue_head = 0;
+    _queue_tail = 0;
+    _last_frame_len = 0;
+    _scanning = true;
+  }
+  sendCommand(kStartScan, sizeof(kStartScan));
+}
+
 bool CoinD6::startScan() {
   resetParser();
   _queue_head = 0;

@@ -42,6 +42,8 @@ extern WiFiServer lidarServer;
 extern WiFiClient lidarClient;
 extern QueuedRawCapsuleStream lidarStream;
 extern bool lidarHasClient;
+extern bool lidarReady;
 
+void beginLidarUart();
+void pollLidar(uint32_t now);
 void serviceLidarClient();
-bool startLidarScan();

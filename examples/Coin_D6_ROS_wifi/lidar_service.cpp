@@ -9,6 +9,11 @@ WiFiServer lidarServer(LIDAR_TCP_PORT);
 WiFiClient lidarClient;
 QueuedRawCapsuleStream lidarStream(lidarClient);
 bool lidarHasClient = false;
+bool lidarReady = false;
+
+static uint32_t lastLidarProbeMs = 0;
+static uint32_t lidarWaitSinceMs = 0;
+static bool lidarWaitAnnounced = false;
 
 QueuedRawCapsuleStream::QueuedRawCapsuleStream(WiFiClient& client)
     : LidarRawCapsuleStream(client), _client(client) {}
@@ -83,7 +88,43 @@ void QueuedRawCapsuleStream::popHead() {
   _count--;
 }
 
+void beginLidarUart() {
+  lidar.begin(LIDAR_RX_PIN, LIDAR_TX_PIN);
+  lidar.setRawCapsuleStream(&lidarStream);
+}
+
+void pollLidar(uint32_t now) {
+  if (lidarReady) {
+    return;
+  }
+  if (lidar.capsuleSize() != 0) {
+    lidarReady = true;
+    lidarServer.begin();
+    Serial.print("Lidar scan up, type 0x");
+    Serial.print(lidar.scanAnswerType(), HEX);
+    Serial.print(", packet size ");
+    Serial.println(lidar.capsuleSize());
+    Serial.println("Lidar server started.");
+    return;
+  }
+  if (lidarWaitSinceMs == 0) {
+    lidarWaitSinceMs = now;
+  }
+  if (lastLidarProbeMs == 0 || (now - lastLidarProbeMs) >= LIDAR_RETRY_MS) {
+    lastLidarProbeMs = now;
+    lidar.requestScan();
+  }
+  if (!lidarWaitAnnounced && (now - lidarWaitSinceMs) >= LIDAR_RETRY_MS) {
+    lidarWaitAnnounced = true;
+    Serial.println(
+        "Lidar not ready. Control server is up; lidar server starts when the sensor responds.");
+  }
+}
+
 void serviceLidarClient() {
+  if (!lidarReady) {
+    return;
+  }
   if (lidarHasClient && lidarClient.connected()) {
     return;
   }
@@ -107,25 +148,3 @@ void serviceLidarClient() {
   Serial.println(lidarClient.remoteIP());
 }
 
-bool startLidarScan() {
-  lidar.begin(LIDAR_RX_PIN, LIDAR_TX_PIN);
-  delay(500);
-
-  if (!lidar.connect(LIDAR_RX_PIN, LIDAR_TX_PIN)) {
-    Serial.println("Failed to connect to lidar.");
-    return false;
-  }
-
-  if (!lidar.startScan()) {
-    Serial.println("Failed to start scan.");
-    return false;
-  }
-
-  Serial.print("Scan stream type 0x");
-  Serial.print(lidar.scanAnswerType(), HEX);
-  Serial.print(", packet size ");
-  Serial.println(lidar.capsuleSize());
-
-  lidar.setRawCapsuleStream(&lidarStream);
-  return true;
-}
