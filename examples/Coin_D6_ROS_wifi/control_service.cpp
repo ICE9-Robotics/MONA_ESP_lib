@@ -36,11 +36,11 @@ void setSpeed(int left_tps, int right_tps) {
 }
 
 static int16_t clampTicksPerSec(int32_t value) {
-  if (value > 10000) {
-    return 10000;
+  if (value > kMotorMaxTicksPerSec) {
+    return static_cast<int16_t>(kMotorMaxTicksPerSec);
   }
-  if (value < -10000) {
-    return -10000;
+  if (value < -kMotorMaxTicksPerSec) {
+    return static_cast<int16_t>(-kMotorMaxTicksPerSec);
   }
   return static_cast<int16_t>(value);
 }

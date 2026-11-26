@@ -4,8 +4,6 @@
 #include "freertos/task.h"
 
 static const int kControlPeriodMs = 20;
-static const int kMaxTicksPerSec = 10000;
-/* Feedforward: ~3600 ticks/s ≈ PWM 255 → divide by 14. Tune with Motor_speed_PID_tune. */
 static const int kDefaultLeftFfDiv = 30;
 static const int kDefaultLeftKpDiv = 8;
 static const int kDefaultLeftKiDiv = 100;
@@ -43,11 +41,11 @@ static int clamp_pwm(int v) {
 }
 
 static int clamp_tps(int v) {
-	if (v > kMaxTicksPerSec) {
-		return kMaxTicksPerSec;
+	if (v > kMotorMaxTicksPerSec) {
+		return kMotorMaxTicksPerSec;
 	}
-	if (v < -kMaxTicksPerSec) {
-		return -kMaxTicksPerSec;
+	if (v < -kMotorMaxTicksPerSec) {
+		return -kMotorMaxTicksPerSec;
 	}
 	return v;
 }
