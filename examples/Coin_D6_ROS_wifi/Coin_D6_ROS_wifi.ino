@@ -1,13 +1,10 @@
 /*
   Coin_D6_ROS_wifi.ino
 
-  Stream COIN-D6 raw scan packets to a ROS 2 PC and accept wheel speed
-  commands (ticks/s) while publishing encoder ticks.
-
-  Serial via micro-USB: 
-    USB Serial for debugging and testing. 
-    Baud rate 115200. 
-    Type "help" for commands.
+  ROS2 jazzy for MONA:
+  - Streams COIN-D6 raw scan packets
+  - Accepts wheel speed commands (ticks/s) 
+  - Publishes encoder ticks
 
   TCP ports:
     8888: lidar
@@ -17,6 +14,10 @@
           packet format: 
           - Out: 'OD' + uint32 millis + int32 left ticks + int32 right ticks
           - In: 'MW' + int16 left ticks/s + int16 right ticks/s
+
+  USB Serial interface for debugging and testing. 
+  - Baud rate 115200. 
+  - Type "help" for commands.
 */
 #include "Mona_ESP_lib.h"
 #include "control_service.h"

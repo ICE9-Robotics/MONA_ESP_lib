@@ -5,7 +5,6 @@
 
 inline bool socketHasSpace(WiFiClient& client, size_t need) {
   const int space = client.availableForWrite();
-  // Arduino Client defaults to 0 when the socket does not report buffer space.
   return space <= 0 || space >= static_cast<int>(need);
 }
 

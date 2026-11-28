@@ -4,7 +4,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/portmacro.h"
 
-// Quadrature hall encoders counted by the ESP32 PCNT peripheral (not GPIO ISRs).
+// Quadrature hall encoders counted by the ESP32 PCNT peripheral.
 #define ENC_PCNT_HIGH 32767
 #define ENC_PCNT_LOW  (-32768)
 #define ENC_GLITCH_NS 1000

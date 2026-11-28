@@ -1,11 +1,6 @@
 #include "Coin_D6.h"
 #include <WiFi.h>
 
-// Wiring (cross TX/RX):
-//   LIDAR TX -> ESP32 GPIO26 (RX)
-//   LIDAR RX -> ESP32 GPIO27 (TX)
-//   LIDAR GND -> ESP32 GND
-//   LIDAR VCC -> 5V (typical 240 mA, peak ~800 mA)
 static const int LIDAR_RX_PIN = 26;
 static const int LIDAR_TX_PIN = 27;
 

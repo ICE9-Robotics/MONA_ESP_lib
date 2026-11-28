@@ -1,6 +1,6 @@
 /*
   Encoder_print.ino
-  Print left and right encoder counts. Motors stay off.
+  Print left and right encoder counts.
 */
 #include <Wire.h>
 #include "Mona_ESP_lib.h"

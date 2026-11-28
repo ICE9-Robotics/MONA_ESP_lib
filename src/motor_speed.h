@@ -1,13 +1,13 @@
 #ifndef Mona_ESP_motor_speed_h
 #define Mona_ESP_motor_speed_h
 
-/** Absolute command limit for each wheel, in encoder ticks per second. */
+// Absolute command limit for each wheel, in encoder ticks per second.
 static const int kMotorMaxTicksPerSec = 7500;
 
-/** Closed-loop wheel speed control (encoder ticks/s → PWM). */
+// Closed-loop wheel speed control (encoder ticks/s → PWM).
 void motor_speed_init(void);
 
-/** Set left/right wheel target speed in signed encoder ticks per second. */
+// Set left/right wheel target speed in signed encoder ticks per second.
 void motor_set_left(int ticks_per_s);
 void motor_set_right(int ticks_per_s);
 

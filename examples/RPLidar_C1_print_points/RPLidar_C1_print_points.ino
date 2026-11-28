@@ -1,10 +1,5 @@
 #include "RPLidar_C1.h"
 
-// Wiring (cross TX/RX):
-//   LIDAR TX (yellow) -> ESP32 GPIO26 (RX)
-//   LIDAR RX (green)  -> ESP32 GPIO27 (TX)
-//   LIDAR GND (black) -> ESP32 GND
-//   LIDAR VCC (red)   -> 5V (needs ~250mA; aim for 5.0V, not 4.7V)
 static const int LIDAR_RX_PIN = 26;
 static const int LIDAR_TX_PIN = 27;
 
